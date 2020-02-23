@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Badges.FilterPage"
+             xmlns:vm="clr-namespace:Badges;"
+             Title="{Binding Title}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollView Grid.Row="0">
+            <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
+                <Picker x:Name="YearPicker" Title="Год" SelectedIndexChanged="YearPicker_SelectedIndexChanged"/>
+                <ListView ItemsSource="{Binding Sections}"
+                 HorizontalOptions="FillAndExpand"
+                 HasUnevenRows="true"
+                 CachingStrategy="RecycleElement"
+                 ItemSelected="OnItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="10">
+                                    <Image Source="{Binding ImagePath}"
+                                           AutomationProperties.Name="{Binding Name}"
+                                           WidthRequest="79" HeightRequest="79"
+                                           Margin="0,5,16,0"/>
+                                    <Label Text="{Binding Name}" 
+                                           LineBreakMode="WordWrap" 
+                                           Style="{DynamicResource ListItemTextStyle}" 
+                                           FontSize="16"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+		</ScrollView>
+	</Grid>
+</ContentPage>

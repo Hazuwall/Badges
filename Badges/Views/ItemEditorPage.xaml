@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Badges.ItemEditorPage"
+		Title="">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Сохранить" Clicked="Save_Clicked" />
+        <ToolbarItem Text="Удалить" Clicked="Delete_Clicked" />
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout Spacing="20" Padding="15">
+			<Label Text="Название" FontSize="Medium" />
+			<Entry Text="{Binding Item.Title}" FontSize="Medium" />
+            <Label Text="Дата" FontSize="Medium" />
+            <DatePicker Date="{Binding Item.Date}"/>
+            <Label Text="Секции" FontSize="Medium" />
+            <ListView x:Name="SectionsListView"
+                HorizontalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <Label Text="{Binding Name}" 
+                                           LineBreakMode="WordWrap" 
+                                           Style="{DynamicResource ListItemTextStyle}" 
+                                           FontSize="16"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Проект" FontSize="Medium" />
+            <Editor Text="{Binding Item.ProjectTitle}" FontSize="Medium" Margin="0" />
+        </StackLayout>
+	</ContentPage.Content>
+</ContentPage>
