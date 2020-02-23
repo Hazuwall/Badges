@@ -10,12 +10,11 @@ namespace Badges
 {
     public class BadgesDb : IDataStore<Badge, Section, BadgeFilter>
     {
-        private SQLiteConnection _Database;
+        private readonly SQLiteConnection _Database;
 
         public BadgesDb()
         {
-            string databasePath = Droid.StorageHelper.GetDatabasePath();
-            System.Diagnostics.Debug.WriteLine(databasePath);
+            string databasePath = "/storage/emulated/0/Badges/Badges.db3";// Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "Badges", "Badges.db3");
             bool doExist = File.Exists(databasePath);
 
             SQLiteConnection database = new SQLiteConnection(databasePath);
