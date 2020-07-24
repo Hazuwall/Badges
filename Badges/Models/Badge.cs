@@ -17,9 +17,6 @@ namespace Badges
         [Column("section_id")]
         public int SectionId { get; set; }
 
-        [Ignore]
-        public Section Section { get; set; }
-
         [Column("project_title")]
         public string ProjectTitle { get; set; }
 
@@ -28,8 +25,5 @@ namespace Badges
 
         [Column("date")]
         public DateTime Date { get; set; }
-
-        [Ignore]
-        public string DateString { get { return this.Date.ToString("yyyy/MM/dd"); } }
     }
 }

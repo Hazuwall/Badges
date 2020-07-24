@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace Badges
 {
-    public interface IDataStore<T, G, F> : INotifyPropertyChanged
+    public interface IDataStore<TItem, TGroup, TFilter> : INotifyPropertyChanged
     {
         bool IsAvailable { get; }
-        Task<bool> AddItemAsync(T item);
-        Task<bool> UpdateItemAsync(T item);
-        Task<bool> DeleteItemAsync(T id);
-        Task<T> GetItemAsync(int id);
-        Task<IEnumerable<T>> GetItemsAsync(F filter, bool forceRefresh);
-        IEnumerable<G> GetGroups();
+        Task<bool> AddItemAsync(TItem item);
+        Task<bool> UpdateItemAsync(TItem item);
+        Task<bool> DeleteItemAsync(TItem item);
+        Task<TItem> GetItemAsync(int id);
+        Task<IEnumerable<TItem>> GetItemsAsync(TFilter filter, bool forceRefresh);
+        IEnumerable<TGroup> GetGroups();
     }
 }

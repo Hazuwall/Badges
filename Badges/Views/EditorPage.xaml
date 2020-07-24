@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Badges.ItemEditorPage"
-		Title="">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Badges.EditorPage"
+             Title="">
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Сохранить" Clicked="Save_Clicked" />
-        <ToolbarItem Text="Удалить" Clicked="Delete_Clicked" />
+        <ToolbarItem Text="Сохранить"
+                     Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Удалить" Command="{Binding DeleteCommand}" />
 	</ContentPage.ToolbarItems>
 	<ContentPage.Content>
 		<StackLayout Spacing="20" Padding="15">
 			<Label Text="Название" FontSize="Medium" />
-			<Entry Text="{Binding Item.Title}" FontSize="Medium" />
+			<Entry Text="{Binding ItemTitle, Mode=TwoWay}" FontSize="Medium" />
             <Label Text="Дата" FontSize="Medium" />
-            <DatePicker Date="{Binding Item.Date}"/>
+            <DatePicker Date="{Binding SelectedDate, Mode=TwoWay}"/>
             <Label Text="Секции" FontSize="Medium" />
-            <ListView x:Name="SectionsListView"
+            <ListView
+                ItemsSource="{Binding Sections}"
                 HorizontalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected">
+                SelectedItem="{Binding SelectedSection, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" Padding="10">
                                 <Label Text="{Binding Name}" 
-                                           LineBreakMode="WordWrap" 
-                                           Style="{DynamicResource ListItemTextStyle}" 
-                                           FontSize="16"/>
+                                       LineBreakMode="WordWrap" 
+                                       Style="{DynamicResource ListItemTextStyle}" 
+                                       FontSize="16"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <Label Text="Проект" FontSize="Medium" />
-            <Editor Text="{Binding Item.ProjectTitle}" FontSize="Medium" Margin="0" />
+            <Editor Text="{Binding ProjectTitle, Mode=TwoWay}" FontSize="Medium" Margin="0" />
         </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

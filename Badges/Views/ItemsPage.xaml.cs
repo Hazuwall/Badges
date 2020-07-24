@@ -15,30 +15,25 @@ namespace Badges
             InitializeComponent();
 
             BindingContext = viewModel = new ItemsViewModel();
+            viewModel.Navigation = Navigation;
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        private void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            if (!(args.SelectedItem is Badge item))
-                return;
+            if (args.SelectedItem != null)
+            {
+                viewModel.EditItemCommand.Execute(args.SelectedItem);
 
-            await Navigation.PushAsync(new ItemEditorPage(new EditItemViewModel(item)));
-
-            // Manually deselect item
-            ItemsListView.SelectedItem = null;
-        }
-
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new ItemEditorPage(new AddItemViewModel()));
+                // Manually deselect item
+                ItemsListView.SelectedItem = null;
+            }
         }
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-
             if (viewModel.Items.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
+            base.OnAppearing();
         }
     }
 }

@@ -10,12 +10,14 @@
         </Grid.RowDefinitions>
         <ScrollView Grid.Row="0">
             <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
-                <Picker x:Name="YearPicker" Title="Год" SelectedIndexChanged="YearPicker_SelectedIndexChanged"/>
-                <ListView ItemsSource="{Binding ViewModel.Sections}"
-                 HorizontalOptions="FillAndExpand"
-                 HasUnevenRows="true"
-                 CachingStrategy="RecycleElement"
-                 ItemSelected="OnItemSelected">
+                <Picker Title="Год"
+                        ItemsSource="{Binding Years}"
+                        SelectedIndex="{Binding SelectedYearIndex, Mode=TwoWay}"/>
+                <ListView ItemsSource="{Binding Sections}"
+                          SelectedItem="{Binding SelectedSection, Mode=TwoWay}"
+                          HorizontalOptions="FillAndExpand"
+                          HasUnevenRows="true"
+                          CachingStrategy="RecycleElement">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

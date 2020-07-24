@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -9,59 +10,74 @@ namespace Badges
 {
     public class ItemsViewModel : PageViewModel
     {
-        private bool _isBusy = false;
-        public bool IsBusy
+        private BadgeFilter _filter = new BadgeFilter(DateTime.Now.Year, Section.All.Id);
+
+        private bool _isUpdating = false;
+        public bool IsUpdating
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get { return _isUpdating; }
+            set { SetProperty(ref _isUpdating, value); }
         }
 
-        public ObservableCollection<Badge> Items { get; set; }
-        public Command LoadItemsCommand { get; set; }
-        public BadgeFilter Filter { get; set; }
+        public ObservableCollection<BadgeViewModel> Items { get; } = new ObservableCollection<BadgeViewModel>();
+        public Command LoadItemsCommand { get; }
+        public Command AddItemCommand { get; }
+        public Command EditItemCommand { get; }
+        public INavigation Navigation { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Badges";
-            Items = new ObservableCollection<Badge>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            Filter = new BadgeFilter(DateTime.Now.Year, Section.Undefined.Id);
-
-            MessagingCenter.Subscribe<ItemEditorPage, Badge>(this, "ItemChanged", async (obj, item) =>
+            LoadItemsCommand = new Command(StartLoadItems);
+            AddItemCommand = new Command(() => Navigation.PushAsync(new EditorPage(new AddItemViewModel())),
+                ()=> App.DataStore.IsAvailable);
+            EditItemCommand = new Command((item) =>
             {
-                await ExecuteLoadItemsCommand();
+                var vm = new EditItemViewModel(((BadgeViewModel)item).Badge);
+                Navigation.PushAsync(new EditorPage(vm));
             });
 
-            MessagingCenter.Subscribe<FilterPage, int>(this, "YearChanged", async (obj, year) =>
+            MessagingCenter.Subscribe<EditorPageViewModel>(this, "ItemChanged", (sender) =>
             {
-                Filter.Year = year;
-                await ExecuteLoadItemsCommand();
+                StartLoadItems();
             });
 
-            MessagingCenter.Subscribe<FilterPage, int>(this, "SectionChanged", async (obj, id) =>
+            MessagingCenter.Subscribe<FilterViewModel, BadgeFilter>(this, FilterViewModel.FilterChangedMessage, (sender, filter) =>
             {
-                Filter.SectionId = (Filter.SectionId == id) ? Section.Undefined.Id : id;
-                await ExecuteLoadItemsCommand();
+                _filter = filter;
+                StartLoadItems();
             });
 
-            DataStore.PropertyChanged += async (sender, e) =>
+            App.DataStore.PropertyChanged += (sender, e) =>
             {
-                if (e.PropertyName == nameof(DataStore.IsAvailable) && DataStore.IsAvailable)
-                    await ExecuteLoadItemsCommand();
+                if (e.PropertyName == nameof(App.DataStore.IsAvailable))
+                {
+                    StartLoadItems();
+                    AddItemCommand?.ChangeCanExecute();
+                }
             };
         }
 
-        private async Task ExecuteLoadItemsCommand()
+        private async void StartLoadItems()
         {
-            if (IsBusy)
+            if (IsUpdating)
                 return;
-            IsBusy = true;
+            IsUpdating = true;
 
             try
             {
                 Items.Clear();
-                foreach (var item in await DataStore.GetItemsAsync(Filter, true))
-                    Items.Add(item);
+                var sectionMap = new Dictionary<int,Section>();
+                foreach (var section in App.DataStore.GetGroups())
+                    sectionMap.Add(section.Id, section);
+                foreach (var item in await App.DataStore.GetItemsAsync(_filter, true))
+                {
+                    Items.Add(new BadgeViewModel()
+                    {
+                        Badge = item,
+                        Section = sectionMap[item.SectionId]
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -69,7 +85,7 @@ namespace Badges
             }
             finally
             {
-                IsBusy = false;
+                IsUpdating = false;
             }
         }
     }

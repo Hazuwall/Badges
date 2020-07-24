@@ -5,19 +5,19 @@
              Title="{Binding Title}"
              x:Name="BrowseItemsPage">
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Добавить" Clicked="AddItem_Clicked" />
+		<ToolbarItem Text="Добавить" Command="{Binding AddItemCommand}" />
 	</ContentPage.ToolbarItems>
 	<ContentPage.Content>
 		<StackLayout>
 			<ListView x:Name="ItemsListView" 
-                ItemsSource="{Binding Items}"
-                VerticalOptions="FillAndExpand"
-                 HasUnevenRows="true"
-                 RefreshCommand="{Binding LoadItemsCommand}"
-                 IsPullToRefreshEnabled="true"
-                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                 CachingStrategy="RecycleElement"
-                 ItemSelected="OnItemSelected">
+                      ItemsSource="{Binding Items}"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      RefreshCommand="{Binding LoadItemsCommand}"
+                      IsPullToRefreshEnabled="true"
+                      IsRefreshing="{Binding IsUpdating, Mode=OneWay}"
+                      CachingStrategy="RecycleElement"
+                      ItemSelected="OnItemSelected">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
@@ -27,16 +27,16 @@
                                            WidthRequest="79" HeightRequest="79"
                                            Margin="0,5,16,0"/>
                                 <StackLayout>
-                                    <Label Text="{Binding Title}" 
+                                    <Label Text="{Binding Badge.Title}" 
                                            LineBreakMode="WordWrap" 
                                            Style="{DynamicResource ListItemTextStyle}" 
                                            FontSize="16"/>
-                                    <Label Text="{Binding ProjectTitle}" 
+                                    <Label Text="{Binding Badge.ProjectTitle}" 
                                            LineBreakMode="NoWrap"
                                            Style="{DynamicResource ListItemDetailTextStyle}"
                                            FontSize="13"/>
-                                    
-                                    <Label Text="{Binding DateString}" 
+
+                                    <Label Text="{Binding Badge.Date, StringFormat='{0:yyyy/MM/dd}'}" 
                                            LineBreakMode="NoWrap"
                                            Style="{DynamicResource ListItemDetailTextStyle}"
                                            FontSize="13"/>

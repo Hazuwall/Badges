@@ -5,7 +5,7 @@ namespace Badges
     [Table("sections")]
     public class Section
     {
-        public static Section Undefined => new Section() { Id = 0, Name = "Не определена", Color = "#000000" };
+        public static Section All { get; } = new Section() { Id = 0, Name = "Все", Color = "#000000" };
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }
@@ -17,10 +17,7 @@ namespace Badges
         public string Color { get; set; }
 
         [Ignore]
-        public string ImagePath
-        {
-            get { return "Icon" + this.Id.ToString() + ".png"; }
-        }
+        public string ImagePath => string.Format("Icon{0}.png",Id);
 
         public override string ToString()
         {

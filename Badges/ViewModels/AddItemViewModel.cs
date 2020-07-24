@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Badges
 {
     public class AddItemViewModel : EditorPageViewModel
     {
+        public override Command SaveCommand { get; }
+
+        public override Command DeleteCommand {get;}
+
         public AddItemViewModel()
         {
             Title = "Добавить";
-            Item = new Badge()
+            SaveCommand = new Command(async () =>
             {
-                Title = String.Empty,
-                Date = DateTime.Now,
-                ProjectTitle = String.Empty,
-                Section = Section.Undefined,
-                SectionId = 0
-            };
-        }
-
-        public override async Task<bool> SaveAsync()
-        {
-            return this.IsItemValid && await DataStore.AddItemAsync(Item);
-        }
-
-        public override Task<bool> DeleteAsync()
-        {
-            return Task.FromResult(true);
+                if (this.IsItemValid)
+                {
+                    await App.DataStore.AddItemAsync(this.ComposedItem);
+                    this.OnItemChanged();
+                }
+            }, () => IsItemValid);
+            DeleteCommand = new Command(async () =>
+            {
+                await Navigation.PopToRootAsync();
+            });
         }
     }
 }
