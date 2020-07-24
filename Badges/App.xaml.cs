@@ -1,19 +1,22 @@
 ﻿using System;
-
 using Xamarin.Forms;
 
 namespace Badges
 {
     public partial class App : Application
     {
-        public App()
-        {
-            InitializeComponent();
+        public AppViewModel ViewModel { get; }
 
-            if (Device.RuntimePlatform == Device.iOS)
-                MainPage = new MainPage();
-            else
+        public App(AppViewModel appViewModel)
+        {
+            ViewModel = appViewModel;
+            
+            InitializeComponent();
+            
+            if (Device.RuntimePlatform == Device.Android)
                 MainPage = new NavigationPage(new MainPage());
+            else
+                throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Badges
 {
     public partial class ItemsPage : ContentPage
     {
-        ItemsViewModel viewModel;
+        private readonly ItemsViewModel viewModel;
 
         public ItemsPage()
         {
@@ -19,8 +19,7 @@ namespace Badges
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Badge;
-            if (item == null)
+            if (!(args.SelectedItem is Badge item))
                 return;
 
             await Navigation.PushAsync(new ItemEditorPage(new EditItemViewModel(item)));

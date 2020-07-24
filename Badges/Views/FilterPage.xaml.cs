@@ -6,14 +6,13 @@ using Xamarin.Forms;
 namespace Badges
 {
 	public partial class FilterPage : ContentPage
-	{
-        public ObservableCollection<Section> Sections { get; set; }
+    {
         public FilterViewModel ViewModel { get; set; }
 
 		public FilterPage()
 		{
             ViewModel = new FilterViewModel();
-            Sections = new ObservableCollection<Section>(ViewModel.DataStore.GetGroups());
+            
             InitializeComponent();
             BindingContext = this;
 
@@ -33,8 +32,7 @@ namespace Badges
 
         private void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Section;
-            if (item == null)
+            if (!(args.SelectedItem is Section item))
                 return;
             // Manually deselect item
             (sender as ListView).SelectedItem = null;

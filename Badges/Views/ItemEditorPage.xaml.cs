@@ -8,10 +8,10 @@ namespace Badges
 {
     public partial class ItemEditorPage : ContentPage
     {
-        private BaseEditorViewModel viewModel;
+        private EditorPageViewModel viewModel;
         private ObservableCollection<Section> sections;
 
-        public ItemEditorPage(BaseEditorViewModel viewModel)
+        public ItemEditorPage(EditorPageViewModel viewModel)
         {
             InitializeComponent();
 

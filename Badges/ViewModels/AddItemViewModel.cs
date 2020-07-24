@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Badges
 {
-    public class AddItemViewModel : BaseEditorViewModel
+    public class AddItemViewModel : EditorPageViewModel
     {
         public AddItemViewModel()
         {

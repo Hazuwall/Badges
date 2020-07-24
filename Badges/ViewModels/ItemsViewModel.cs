@@ -7,8 +7,15 @@ using Xamarin.Forms;
 
 namespace Badges
 {
-    public class ItemsViewModel : BaseViewModel
+    public class ItemsViewModel : PageViewModel
     {
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
         public ObservableCollection<Badge> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
         public BadgeFilter Filter { get; set; }
@@ -36,23 +43,25 @@ namespace Badges
                 Filter.SectionId = (Filter.SectionId == id) ? Section.Undefined.Id : id;
                 await ExecuteLoadItemsCommand();
             });
+
+            DataStore.PropertyChanged += async (sender, e) =>
+            {
+                if (e.PropertyName == nameof(DataStore.IsAvailable) && DataStore.IsAvailable)
+                    await ExecuteLoadItemsCommand();
+            };
         }
 
-        async Task ExecuteLoadItemsCommand()
+        private async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
-
             IsBusy = true;
 
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(Filter,true);
-                foreach (var item in items)
-                {
+                foreach (var item in await DataStore.GetItemsAsync(Filter, true))
                     Items.Add(item);
-                }
             }
             catch (Exception ex)
             {

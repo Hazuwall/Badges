@@ -8,20 +8,18 @@ namespace Badges
     {
         public MainPage()
         {
-            Page itemsPage, aboutPage = null;
-
-            itemsPage = new ItemsPage()
+            Page itemsPage = new ItemsPage()
             {
                 Title = "Badges"
             };
 
-            aboutPage = new FilterPage()
+            Page filterPage = new FilterPage()
             {
                 Title = "Фильтр"
             };
 
             Children.Add(itemsPage);
-            Children.Add(aboutPage);
+            Children.Add(filterPage);
 
             Title = Children[0].Title;
         }

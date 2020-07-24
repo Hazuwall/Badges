@@ -50,13 +50,14 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidLinkTool>proguard</AndroidLinkTool>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidLinkMode>Full</AndroidLinkMode>
     <MandroidI18n />
     <AndroidKeyStore>false</AndroidKeyStore>
     <AndroidSigningKeyStore>C:\Users\yalut\AppData\Local\Xamarin\Mono for Android\Keystore\hazuwall\hazuwall.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>fronttront</AndroidSigningStorePass>
+    <AndroidDexTool>d8</AndroidDexTool>
+    <AndroidLinkTool>r8</AndroidLinkTool>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

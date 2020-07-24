@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Badges
 {
-    public interface IDataStore<T, G, F>
+    public interface IDataStore<T, G, F> : INotifyPropertyChanged
     {
+        bool IsAvailable { get; }
         Task<bool> AddItemAsync(T item);
         Task<bool> UpdateItemAsync(T item);
         Task<bool> DeleteItemAsync(T id);

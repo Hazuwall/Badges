@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Badges.FilterPage"
-             xmlns:vm="clr-namespace:Badges;"
              Title="{Binding Title}">
     <Grid>
         <Grid.RowDefinitions>
@@ -12,7 +11,7 @@
         <ScrollView Grid.Row="0">
             <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
                 <Picker x:Name="YearPicker" Title="Год" SelectedIndexChanged="YearPicker_SelectedIndexChanged"/>
-                <ListView ItemsSource="{Binding Sections}"
+                <ListView ItemsSource="{Binding ViewModel.Sections}"
                  HorizontalOptions="FillAndExpand"
                  HasUnevenRows="true"
                  CachingStrategy="RecycleElement"
